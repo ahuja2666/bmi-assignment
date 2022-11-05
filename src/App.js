@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react"
+import "./App.css"
 
-function App() {
+const App = () => {
+  const [age, setAge] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [bmi, setBmi] = useState("");
+
+  const handelClear = (e) => {
+    e.preventDefault()
+    setAge("");
+    setHeight("");
+    setWeight("");
+  }
+
+  const calculateBMI = (e) => {
+    e.preventDefault()
+    const bmix = weight / height
+    if (bmix < 16) {
+      setBmi(bmix + " Server Thinness")
+    } else if (bmix >= 16 && bmix < 18.5) {
+      setBmi(bmix + " Moderate Thinness")
+    } else if (bmix >= 18.5 && bmix < 25) {
+      setBmi(bmix + " Normal")
+    } else {
+      setBmi(bmix + " Overweight")
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+
+      <div className="app-container">
+        <form>
+          <span className="age">Age</span><input required value={age} onChange={(e) => setAge(e.target.value)} min="2" max="120" className="age-inp" type="number" /><span>ages: 2-120</span>
+          <p> <span>Gender</span><input name="gender" type="radio" value="Male" />Male<input value="Female" name="gender" type="radio" />Female</p>
+          <p>Height <input required min="1" value={height} onChange={(e) => setHeight(e.target.value)} type="number" placeholder="cm" /></p>
+          <p>Weight <input required min="1" value={weight} onChange={(e) => setWeight(e.target.value)} type="number" placeholder="kg" /></p>
+          <button onClick={(e) => calculateBMI(e)} >Calculate</button><button onClick={(e) => handelClear(e)}>Clear</button>
+        </form>
+        <p className="parats">Your BMI is {bmi}</p>
+      </div>
+    </>
+  )
 }
 
-export default App;
+export default App
